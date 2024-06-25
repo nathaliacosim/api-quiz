@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { QuizModule } from './quiz/quiz.module';
 import { CorsMiddleware } from './cors.middleware';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config();
 const dbUser = process.env.DB_USER;
@@ -20,12 +21,13 @@ if (!dbUser || !dbPassword) {
 
 @Module({
   imports: [
+    AuthModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public', 'uploads'),
       serveRoot: '/api/uploads/',
     }),
     MongooseModule.forRoot(
-      `mongodb+srv://${dbUser}:${dbPassword}@cluster0.44rmp7i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+      `mongodb+srv://${dbUser}:${dbPassword}@quizprogweb.qh6d7xs.mongodb.net/?retryWrites=true&w=majority&appName=QuizProgWeb`,
     ),
     QuizModule,
   ],

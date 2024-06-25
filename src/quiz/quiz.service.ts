@@ -50,6 +50,17 @@ export class QuizService {
   }
 
   async getAllCategories(): Promise<Category[]> {
-    return this.categoryModel.find().exec();
+    return this.categoryModel.find().sort({ name: 1 }).exec();
+  }
+
+  async getRandomQuestionsByCategory(
+    category: string,
+    count: number,
+  ): Promise<Question[]> {
+    const questions = await this.questionModel
+      .aggregate([{ $match: { category } }, { $sample: { size: count } }])
+      .exec();
+
+    return questions;
   }
 }

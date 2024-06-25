@@ -53,4 +53,12 @@ export class QuizController {
   async deleteQuestion(@Param('id') id: string) {
     return this.quizService.deleteQuestion(id);
   }
+
+  @Get('categories/:category/questions')
+  async getRandomQuestionsByCategory(
+    @Param('category') category: string,
+  ): Promise<Question[]> {
+    const questions = await this.quizService.getRandomQuestionsByCategory(category, 10);
+    return questions;
+  }
 }
