@@ -16,8 +16,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Pixels de Carinho API')
-    .setDescription('APIS para o projeto Pixels de Carinho.')
+    .setTitle('Quiz API')
+    .setDescription('APIS para o Projeto de ProgWeb.')
     .setVersion('1.0')
     .build();
 

@@ -1,17 +1,16 @@
-import { Schema, Document, model } from 'mongoose';
-
-export interface Question extends Document {
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  category: string;
-}
+import { Schema, Document } from 'mongoose';
 
 export const QuestionSchema = new Schema({
-  question: { type: String, required: true },
+  questionText: { type: String, required: true },
   options: { type: [String], required: true },
   correctAnswer: { type: String, required: true },
   category: { type: String, required: true },
 });
 
-export const QuestionModel = model<Question>('Question', QuestionSchema);
+export interface Question extends Document {
+  id?: string;
+  questionText: string;
+  options: string[];
+  correctAnswer: string;
+  category: string;
+}
