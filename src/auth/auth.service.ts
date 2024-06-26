@@ -9,12 +9,14 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from './create-user.dto';
 import { User, UserDocument } from './user.schema';
+import { UsuarioService } from '../usuario/usuario.service'; // Importe o serviço de usuário
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly usuarioService: UsuarioService, // Injete o serviço de usuário
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -59,10 +61,24 @@ export class AuthService {
       });
 
       const savedUser = await createdUser.save();
+
+      // Cria um registro na tabela de usuários com campos adicionais em branco
+      await this.usuarioService.createUser(email);
+
       return savedUser.toObject(); // Converte para objeto para remover propriedades do Mongoose, como _id
     } catch (error) {
       console.error('Erro ao registrar usuário:', error); // Log do erro para diagnóstico
       throw new InternalServerErrorException('Erro ao registrar usuário');
     }
+  }
+
+  async validateUserById(userId: string): Promise<User | null> {
+    const user = await this.userModel.findById(userId).exec();
+
+    if (!user) {
+      return null; // Usuário não encontrado
+    }
+
+    return user; // Retorna o usuário encontrado
   }
 }

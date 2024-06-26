@@ -8,6 +8,8 @@ import { QuizModule } from './quiz/quiz.module';
 import { CorsMiddleware } from './cors.middleware';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { UsuarioController } from './usuario/usuario.controller';
 
 dotenv.config();
 const dbUser = process.env.DB_USER;
@@ -22,6 +24,7 @@ if (!dbUser || !dbPassword) {
 @Module({
   imports: [
     AuthModule,
+    UsuarioModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public', 'uploads'),
       serveRoot: '/api/uploads/',
@@ -31,7 +34,7 @@ if (!dbUser || !dbPassword) {
     ),
     QuizModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, UsuarioController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
